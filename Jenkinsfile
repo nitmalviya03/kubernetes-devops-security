@@ -22,7 +22,7 @@ pipeline {
       }
     }
 
-    stage('Sonarqube = SAST') {
+    stage('SonarQube - SAST') {
       steps {
         sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://localhost:9000 -Dsonar.login=a26fea3cf030ff2a16ed72cfef66f082553ea857"
       }
