@@ -28,10 +28,20 @@ pipeline {
       }
     }
 
+     stage('OWASP Dependency-check ') {
+      steps {
+        sh "mvn dependency-check:check"
+      }
+      post {
+        always {
+          dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+        }
+      }
+    }
+
     stage('Docker Build and Push') {
       steps {
         withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
-          sh 'printenv'
           sh 'docker build -t nitesh03/numeric-app:""$GIT_COMMIT"" .'
           sh 'docker push nitesh03/numeric-app:""$GIT_COMMIT""'
         }
