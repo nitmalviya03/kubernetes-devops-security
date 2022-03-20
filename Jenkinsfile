@@ -14,12 +14,6 @@ pipeline {
       steps {
         sh "mvn test"
       }
-      post {
-        always {
-          junit 'target/surefire-reports/*.xml'
-          jacoco execPattern: 'target/jacoco.exec'
-        }
-      }
     }
 
     stage('SonarQube - SAST') {
@@ -31,11 +25,6 @@ pipeline {
      stage('OWASP Dependency-check ') {
       steps {
         sh "mvn dependency-check:check"
-      }
-      post {
-        always {
-          dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-        }
       }
     }
 
@@ -57,6 +46,21 @@ pipeline {
       }
     }
     
+    post {
+    always {
+      junit 'target/surefire-reports/*.xml'
+      jacoco execPattern: 'target/jacoco.exec'
+      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+    }
+
+    // success {
+
+    // }
+
+    // failure {
+
+    // }
+
   }
 
 }
